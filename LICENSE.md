@@ -16,6 +16,7 @@ any other means his willingness to license under the EUPL.
 1. Definitions
 
 In this Licence, the following terms have the following meaning:
+
 — ‘The Licence’: this Licence.
 — ‘The Original Work’: the work or software distributed or communicated by the
   ‘Licensor under this Licence, available as Source Code and also as
