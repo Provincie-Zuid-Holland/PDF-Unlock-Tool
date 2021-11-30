@@ -31,3 +31,6 @@ Test files are also available in this repository and can be downloaded to test t
 - Download the file 'WOB_ontgrendel_tool.exe'
 - Read the instructions manual (Manual_WOB_ontgrendel_tool.pdf) to learn how to install and run the tool
 - Check if unlocked files can be edited
+
+## Error detection
+Every time the tool is used, information on what happens in every step of the tool is saved in a file (‘Logging_UnlockTool.txt’), in the same folder als the tool. If errors occur, this file can be used to check which step went wrong.
