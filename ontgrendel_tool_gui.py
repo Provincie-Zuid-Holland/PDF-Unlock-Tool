@@ -223,18 +223,14 @@ vanaf je lokale laptop of OneDrive omgeving.\n\nDeze applicatie is ontwikkeld do
         unlocked_pdfs gives the number of unlocked files
 
         """
-        if not self.single_file:
-            self.parent.destroy()
-            # set output directory
-            out_dir = os.path.join(os.path.dirname(
-                self.process_dir), os.path.basename(self.process_dir) + '_ontgrendeld')
-            logging.info(f'Output directory: {out_dir}')
-        else:
-            out_dir = self.process_dir
-            logging.info(f'Output directory: {out_dir}')
+        self.parent.destroy()
+        # set output directory
+        out_dir = os.path.join(os.path.dirname(
+            self.process_dir), os.path.basename(self.process_dir) + '_ontgrendeld')
+        logging.info(f'Output directory: {out_dir}')
 
         uf.unlock_pdf(files_to_unlock=self.files_to_unlock,
-                      process_dir=self.process_dir, out_dir=out_dir, single_file=self.single_file)
+                      process_dir=self.process_dir, out_dir=out_dir)
         logging.info('Finished unlocking PDF files')
 
         # make empty directories if they exist in the original directory

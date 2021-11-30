@@ -86,10 +86,11 @@ def unlock_pdf(files_to_unlock: str, process_dir: str, out_dir: str):
         root_dir = os.path.dirname(file_out)
         try:
             Path(root_dir).mkdir(parents=True,
-                                 exist_ok=True)  # Create output dir
+                                    exist_ok=True)  # Create output dir
             logging.debug(f'Creating output directory: {root_dir}')
         except:
             logging.error(f'Failed to create output directory: {root_dir}')
+
 
         # Open pdf and save with pikepdf to get rid of any write protections
         # Copy to tempdir since input file cannot be overwritten
