@@ -12,7 +12,8 @@ logging.basicConfig(level=logging.DEBUG,
                     filename='Logging_UnlockTool.log'
                     )  # to see log in console remove filename
 
-def check_length(des_dir,file):
+
+def check_length(des_dir: str, file: str):
     """
     This function checks the length of selected files.
 
@@ -26,28 +27,30 @@ def check_length(des_dir,file):
 
     logging.info(f'Checking length')
     counter = 1
-    long_name=False
+    long_name = False
 
     if len(os.path.join(des_dir, file)) > 246:
-        long_name=True
+        long_name = True
         logging.info(f'Long name:{long_name}')
         try:
             lastChunk = os.path.basename(file)
-            max_length = len(lastChunk) - (len(os.path.join(des_dir, os.path.basename(file))) - 242)
+            max_length = len(
+                lastChunk) - (len(os.path.join(des_dir, os.path.basename(file))) - 242)
             logging.info(f'Max length:{max_length}')
             fileName, fileExtension = os.path.splitext(lastChunk)
             logging.info(f'File name: {fileName}')
             logging.info(f'File extension: {fileExtension}')
             file_name = os.path.join(des_dir, fileName.replace(fileName, fileName[
-                                                                            :max_length]) + fileExtension)
+                :max_length]) + fileExtension)
             logging.debug(f'Shortening name: {file} into {file_name}')
-            logging.info(f'Path length: {len(os.path.join(des_dir, os.path.basename(file)))}')
+            logging.info(
+                f'Path length: {len(os.path.join(des_dir, os.path.basename(file)))}')
         except:
             logging.error(f'Failed to shorten name: {file} into {file_name}')
         if os.path.exists(file_name):
             try:
                 file_name = os.path.join(des_dir, fileName.replace(fileName, fileName[
-                                                                                :max_length]) + "_" + str(
+                    :max_length]) + "_" + str(
                     counter) + fileExtension)
                 counter += 1
                 logging.debug(f'Renaming: {file} into {file_name}')
@@ -55,5 +58,5 @@ def check_length(des_dir,file):
                 logging.error(f'Failed to rename: {file} into {file_name}')
     else:
         file_name = os.path.join(des_dir, file)
-    
+
     return file_name, long_name

@@ -12,6 +12,7 @@ logging.basicConfig(level=logging.DEBUG,
                     filename='Logging_UnlockTool.log'
                     )  # to see log in console remove filename
 
+
 class Application(tk.Frame):
     """
     This class is a python gui to unlock pdf files.
@@ -35,7 +36,7 @@ class Application(tk.Frame):
         root.withdraw()
         self.progress = None
         self.style = None
-        self.single_file=False
+        self.single_file = False
         tk.Frame.__init__(self, master=parent)
         info = 'Deze applicatie ontgrendeld beveiligd PDF bestanden.\n\nSelecteer een bestand of map met bestanden om te ontgrendelen \
 vanaf je lokale laptop of OneDrive omgeving.\n\nDeze applicatie is ontwikkeld door het vDWH team van de Provincie Zuid-Holland.'
@@ -64,15 +65,19 @@ vanaf je lokale laptop of OneDrive omgeving.\n\nDeze applicatie is ontwikkeld do
         self.parent.resizable(width="false", height="false")
         self.parent.minsize(width=250, height=75)
         self.parent.maxsize(width=250, height=75)
-        self.label = tk.Label(self.parent, text=text).place(relx=.1, rely=.2, anchor="w")
-        self.button2 = tk.Button(self.parent, text='Map', command=self.select_folder).place(relx=.38, rely=.7, anchor="c")
-        self.button3 = tk.Button(self.parent, text='Zip-bestand', command=self.select_zip).place(relx=.60, rely=.7, anchor="c")
-        self.quit = tk.Button(self.parent, text='Stoppen', command=self.cancel).place(relx=.86, rely=.7, anchor="c")
+        self.label = tk.Label(self.parent, text=text).place(
+            relx=.1, rely=.2, anchor="w")
+        self.button2 = tk.Button(self.parent, text='Map', command=self.select_folder).place(
+            relx=.38, rely=.7, anchor="c")
+        self.button3 = tk.Button(self.parent, text='Zip-bestand',
+                                 command=self.select_zip).place(relx=.60, rely=.7, anchor="c")
+        self.quit = tk.Button(self.parent, text='Stoppen', command=self.cancel).place(
+            relx=.86, rely=.7, anchor="c")
         self.parent.protocol("WM_DELETE_WINDOW", self.cancel)
 
     def select_zip(self):
         """
-        If the option zip file is selected in the folder_type screen, this function calls the file _functions.unzip_file.unzip_files and 
+        If the option zip file is selected in the folder_type screen, this function calls _functions.unzip_file.unzip_files and 
             gets the path to the selected file.
 
         self.zip_dir is the path to the selected zip file
@@ -80,12 +85,12 @@ vanaf je lokale laptop of OneDrive omgeving.\n\nDeze applicatie is ontwikkeld do
         """
 
         self.parent.destroy()
-        zip_dir = filedialog.askopenfilename(initialdir="/Users", title="Zip-bestand selectie", \
+        zip_dir = filedialog.askopenfilename(initialdir="/Users", title="Zip-bestand selectie",
                                              filetypes=(("ZIP files", "*.ZIP"), ("zip files", "*.zip")))
         if not zip_dir:
             logging.info('Back to select folder type')
             self.folder_type()
-            
+
         else:
             self.zip_dir = os.path.abspath(zip_dir)
             self.process_dir = os.path.abspath(os.path.splitext(zip_dir)[0])
@@ -105,7 +110,8 @@ vanaf je lokale laptop of OneDrive omgeving.\n\nDeze applicatie is ontwikkeld do
         """
 
         self.parent.destroy()
-        process_dir = filedialog.askdirectory(initialdir="/Users", title="Map selectie")
+        process_dir = filedialog.askdirectory(
+            initialdir="/Users", title="Map selectie")
 
         if not process_dir:
             logging.info('Back to select folder type')
@@ -116,26 +122,30 @@ vanaf je lokale laptop of OneDrive omgeving.\n\nDeze applicatie is ontwikkeld do
             logging.info(f'Process directory: {self.process_dir}')
             for root, dirs, files in os.walk(self.process_dir):
                 for file in files:
-                    des_dir=os.path.join(root, os.path.dirname(file))
+                    des_dir = os.path.join(root, os.path.dirname(file))
                     file_path = os.path.join(root, file)
                     logging.info(f'File: {file}')
                     logging.info(f'Destination directory: {des_dir}')
-                    file_name,long_name = cl.check_length(des_dir=des_dir,file=file)
+                    file_name, long_name = cl.check_length(
+                        des_dir=des_dir, file=file)
 
-                    if long_name==True:
+                    if long_name == True:
                         logging.info(f'Long name')
                         try:
                             os.rename(file_path, file_name)
-                            logging.debug(f'Changing name: {file} into {file_name}')
+                            logging.debug(
+                                f'Changing name: {file} into {file_name}')
                         except:
-                            logging.error(f'Failed to change name: {file} into {file_name}')
+                            logging.error(
+                                f'Failed to change name: {file} into {file_name}')
                     name_lower = file.lower()
                     if name_lower.endswith('.zip'):
                         zip_dir = os.path.join(root, file)
-                        proc_zip = os.path.abspath(os.path.splitext(zip_dir)[0])
+                        proc_zip = os.path.abspath(
+                            os.path.splitext(zip_dir)[0])
                         logging.info(f'Zip_dir: {zip_dir}')
                         logging.info(f'Proc dir: {proc_zip}')
-                        uz.unzip_files(zip_dir,proc_zip)
+                        uz.unzip_files(zip_dir, proc_zip)
                         try:
                             os.remove(zip_dir)
                             logging.debug(f'Removed zip: {zip_dir}')
@@ -186,10 +196,12 @@ vanaf je lokale laptop of OneDrive omgeving.\n\nDeze applicatie is ontwikkeld do
         self.parent.resizable(width="false", height="false")
         self.parent.minsize(width=275, height=100)
         self.parent.maxsize(width=275, height=100)
-        self.label = tk.Label(self.parent, text=total_pdfs_unlock).place(relx=.1, rely=.2, anchor="w")
-        self.doorgaan = tk.Button(self.parent, text='Doorgaan', command=self.process_pdf).place(relx=.63, \
-                                                                                                  rely=.7, anchor="c")
-        self.quit = tk.Button(self.parent, text='Stoppen', command=self.cancel).place(relx=.86, rely=.7, anchor="c")
+        self.label = tk.Label(self.parent, text=total_pdfs_unlock).place(
+            relx=.1, rely=.2, anchor="w")
+        self.doorgaan = tk.Button(self.parent, text='Doorgaan', command=self.process_pdf).place(relx=.63,
+                                                                                                rely=.7, anchor="c")
+        self.quit = tk.Button(self.parent, text='Stoppen', command=self.cancel).place(
+            relx=.86, rely=.7, anchor="c")
         self.parent.protocol("WM_DELETE_WINDOW", self.cancel)
 
     def open_folder(self, path: str):
@@ -198,7 +210,7 @@ vanaf je lokale laptop of OneDrive omgeving.\n\nDeze applicatie is ontwikkeld do
         """
 
         os.startfile(path, 'open')
-        
+
     def process_pdf(self):
         """
         This function unlocks pdf files, counts the unloked files and presents the results in a final screen.
@@ -214,25 +226,30 @@ vanaf je lokale laptop of OneDrive omgeving.\n\nDeze applicatie is ontwikkeld do
         if not self.single_file:
             self.parent.destroy()
             # set output directory
-            out_dir = os.path.join(os.path.dirname(self.process_dir), os.path.basename(self.process_dir) + '_ontgrendeld')
+            out_dir = os.path.join(os.path.dirname(
+                self.process_dir), os.path.basename(self.process_dir) + '_ontgrendeld')
             logging.info(f'Output directory: {out_dir}')
         else:
             out_dir = self.process_dir
             logging.info(f'Output directory: {out_dir}')
 
-        uf.unlock_pdf(files_to_unlock=self.files_to_unlock, process_dir=self.process_dir, out_dir=out_dir, single_file=self.single_file)
+        uf.unlock_pdf(files_to_unlock=self.files_to_unlock,
+                      process_dir=self.process_dir, out_dir=out_dir, single_file=self.single_file)
         logging.info('Finished unlocking PDF files')
-        
+
         # make empty directories if they exist in the original directory
         if len(self.empty_dir) > 0:
             logging.info('Started creating empty directories')
             for emp_dir in self.empty_dir:
                 create_emp_dir = emp_dir.replace(self.process_dir, out_dir)
                 try:
-                    Path(create_emp_dir).mkdir(parents=True, exist_ok=True)  ## Create empty directory in output dir
-                    logging.debug(f'Creating empty directory: {create_emp_dir}')
+                    # Create empty directory in output dir
+                    Path(create_emp_dir).mkdir(parents=True, exist_ok=True)
+                    logging.debug(
+                        f'Creating empty directory: {create_emp_dir}')
                 except:
-                    logging.error(f'Failed to create empty directory: {create_emp_dir}')
+                    logging.error(
+                        f'Failed to create empty directory: {create_emp_dir}')
             logging.info('Finished creating empty directories')
 
         # count unlocked PDF's
@@ -265,20 +282,24 @@ vanaf je lokale laptop of OneDrive omgeving.\n\nDeze applicatie is ontwikkeld do
         self.parent.resizable(width="false", height="false")
         self.parent.minsize(width=800, height=150)
         self.parent.maxsize(width=800, height=150)
-        self.label = tk.Label(self.parent, text=klaar).place(relx=.03, rely=.1, anchor="w")
-        self.label = tk.Label(self.parent, text=total_unlocked).place(relx=.03, rely=.25, anchor="w")
+        self.label = tk.Label(self.parent, text=klaar).place(
+            relx=.03, rely=.1, anchor="w")
+        self.label = tk.Label(self.parent, text=total_unlocked).place(
+            relx=.03, rely=.25, anchor="w")
 
         # Define clickable labels
         label1 = tk.Label(self.parent, text=output, fg='blue', cursor='hand2')
         label1.pack()
         label1.bind("<Button-1>", lambda e: self.open_folder(out_dir))
         self.label1 = label1.place(relx=.03, rely=.6, anchor="w")
-        
-        self.label = tk.Label(self.parent, text=output2).place(relx=.03, rely=.4, anchor="w")
 
-        self.quit = tk.Button(self.parent, text='Sluiten', command=self.ready).place(relx=.95, rely=.8, anchor="c")
+        self.label = tk.Label(self.parent, text=output2).place(
+            relx=.03, rely=.4, anchor="w")
+
+        self.quit = tk.Button(self.parent, text='Sluiten', command=self.ready).place(
+            relx=.95, rely=.8, anchor="c")
         self.parent.protocol("WM_DELETE_WINDOW", self.ready)
-    
+
     def tool_destroy(self):
         """
         Function that destroys the tool if file/folder selection is canceled.
@@ -304,6 +325,7 @@ vanaf je lokale laptop of OneDrive omgeving.\n\nDeze applicatie is ontwikkeld do
         self.parent.quit()
         logging.shutdown()
         logging.info('Ready with tool')
+
 
 if __name__ == '__main__':
     root = tk.Tk()
