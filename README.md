@@ -11,6 +11,7 @@ The executable ('WOB_ontgrendel_tool.exe') installs all the needed dependencies 
 If the tool is run from the .py file ('ontgrendel_tool_gui.py') there are extra files needed (also available in this repository):
 - file '_functions/unlock_file.py'
 - file '_functions/unzip_files.py'
+- file '_functions/unlock_file.py'
 - 'logo.ico' (file with a logo)
 - package: pikepdf (see file 'requirements/requirements_gui.txt')
 
