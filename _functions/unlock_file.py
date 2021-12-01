@@ -58,9 +58,9 @@ def unlock_pdf(files_to_unlock: str, process_dir: str, out_dir: str):
         style='text.Horizontal.TProgressbar'
     )
     progress.grid(row=1, column=1, columnspan=2, padx=5, pady=5)
-    label = ttk.Label(parent, text='PDF\'s ontgrendelen')
+    label = ttk.Label(parent, text='Unlocking pdf\'s')
     label.grid(row=2, column=1, pady=5, padx=5, sticky='nswe')
-    button = ttk.Button(parent, text='Stoppen', command=lambda: [parent.destroy(),
+    button = ttk.Button(parent, text='Stop', command=lambda: [parent.destroy(),
                                                                  parent.quit(),
                                                                  logging.shutdown(),
                                                                  logging.info('Tool cancelled')])
@@ -72,7 +72,7 @@ def unlock_pdf(files_to_unlock: str, process_dir: str, out_dir: str):
 
     # set start value PDF unlock
     progress['value'] = 1
-    label.configure(text="Bezig met ontgrendelen")
+    label.configure(text="Busy unlocking pdf\'s")
     style.configure('text.Horizontal.TProgressbar',
                     text='{:g} %'.format(progress['value']))
 

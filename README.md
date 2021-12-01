@@ -1,6 +1,7 @@
 ## Introduction
-This repository is a simple graphical user interface (GUI) that unlocks protected pdf files. The python GUI is compiled into an executable which installs all the needed dependencies.
-The GUI has the following options:
+This repository is a simple graphical user interface (GUI) that unlocks protected pdf files. With this tool it is possible to unlock multiple pdf's at once.
+The tool may be run via the .py file or via de executable. The executable installs all the needed dependencies. 
+The tool has the following options:
 - unlock pdf files in a folder
 - unlock pdf files in a zipped folder
 
@@ -34,3 +35,9 @@ Test files are also available in this repository and can be downloaded to test t
 
 ## Error detection
 Every time the tool is used, information on what happens in every step of the tool is saved in a file (‘Logging_UnlockTool.txt’), in the same folder als the tool. If errors occur, this file can be used to check which step went wrong.
+
+## Author
+Joana Cardoso
+
+## Contact
+For questions or suggestions please contact: vdwh@pzh.nl

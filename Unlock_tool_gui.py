@@ -38,8 +38,7 @@ class Application(tk.Frame):
         self.style = None
         self.single_file = False
         tk.Frame.__init__(self, master=parent)
-        info = 'Deze applicatie ontgrendeld beveiligd PDF bestanden.\n\nSelecteer een bestand of map met bestanden om te ontgrendelen \
-vanaf je lokale laptop of OneDrive omgeving.\n\nDeze applicatie is ontwikkeld door het vDWH team van de Provincie Zuid-Holland.'
+        info = 'This application unlocks protected pdf files.\n\nSelect a folder to start unlocking.\n\nThis application is developed by the Data Wharehouse team of the Province of Zuid-Holland, The Netherlands.'
         self.parent = parent
         parent.iconbitmap('logo.ico')
         messagebox.showinfo(title=None, message=info)
@@ -60,19 +59,19 @@ vanaf je lokale laptop of OneDrive omgeving.\n\nDeze applicatie is ontwikkeld do
         y = (hs / 2) - (h / 2)
         self.parent.geometry('+%d+%d' % (x, y))
         self.parent.iconbitmap('logo.ico')
-        self.parent.title('Bestand type')
-        text = 'Wat wil je selecteren?'
+        self.parent.title('File type')
+        text = 'What do you want to select?'
         self.parent.resizable(width="false", height="false")
         self.parent.minsize(width=250, height=75)
         self.parent.maxsize(width=250, height=75)
         self.label = tk.Label(self.parent, text=text).place(
             relx=.1, rely=.2, anchor="w")
-        self.button2 = tk.Button(self.parent, text='Map', command=self.select_folder).place(
+        self.button2 = tk.Button(self.parent, text='Folder', command=self.select_folder).place(
             relx=.38, rely=.7, anchor="c")
-        self.button3 = tk.Button(self.parent, text='Zip-bestand',
-                                 command=self.select_zip).place(relx=.60, rely=.7, anchor="c")
-        self.quit = tk.Button(self.parent, text='Stoppen', command=self.cancel).place(
-            relx=.86, rely=.7, anchor="c")
+        self.button3 = tk.Button(self.parent, text='Zipped folder',
+                                 command=self.select_zip).place(relx=.64, rely=.7, anchor="c")
+        self.quit = tk.Button(self.parent, text='Stop', command=self.cancel).place(
+            relx=.88, rely=.7, anchor="c")
         self.parent.protocol("WM_DELETE_WINDOW", self.cancel)
 
     def select_zip(self):
@@ -85,7 +84,7 @@ vanaf je lokale laptop of OneDrive omgeving.\n\nDeze applicatie is ontwikkeld do
         """
 
         self.parent.destroy()
-        zip_dir = filedialog.askopenfilename(initialdir="/Users", title="Zip-bestand selectie",
+        zip_dir = filedialog.askopenfilename(initialdir="/Users", title="Zipped folder selection",
                                              filetypes=(("ZIP files", "*.ZIP"), ("zip files", "*.zip")))
         if not zip_dir:
             logging.info('Back to select folder type')
@@ -111,7 +110,7 @@ vanaf je lokale laptop of OneDrive omgeving.\n\nDeze applicatie is ontwikkeld do
 
         self.parent.destroy()
         process_dir = filedialog.askdirectory(
-            initialdir="/Users", title="Map selectie")
+            initialdir="/Users", title="Folder selection")
 
         if not process_dir:
             logging.info('Back to select folder type')
@@ -181,7 +180,7 @@ vanaf je lokale laptop of OneDrive omgeving.\n\nDeze applicatie is ontwikkeld do
                     self.files_to_unlock.append(os.path.join(root, name))
 
         # print messages
-        total_pdfs_unlock = 'Gevonden PDF\'s: ' + str(self.pdf_files)
+        total_pdfs_unlock = 'Number of pdf\'s found: ' + str(self.pdf_files)
 
         self.parent = tk.Tk()
         w = self.parent.winfo_reqwidth()
@@ -192,15 +191,15 @@ vanaf je lokale laptop of OneDrive omgeving.\n\nDeze applicatie is ontwikkeld do
         y = (hs / 2) - (h / 2)
         self.parent.geometry('+%d+%d' % (x, y))
         self.parent.iconbitmap('logo.ico')
-        self.parent.title('Gevonden PDF\'s')
+        self.parent.title('Found pdf\'s')
         self.parent.resizable(width="false", height="false")
         self.parent.minsize(width=275, height=100)
         self.parent.maxsize(width=275, height=100)
         self.label = tk.Label(self.parent, text=total_pdfs_unlock).place(
             relx=.1, rely=.2, anchor="w")
-        self.doorgaan = tk.Button(self.parent, text='Doorgaan', command=self.process_pdf).place(relx=.63,
+        self.doorgaan = tk.Button(self.parent, text='Continue', command=self.process_pdf).place(relx=.68,
                                                                                                 rely=.7, anchor="c")
-        self.quit = tk.Button(self.parent, text='Stoppen', command=self.cancel).place(
+        self.quit = tk.Button(self.parent, text='Stop', command=self.cancel).place(
             relx=.86, rely=.7, anchor="c")
         self.parent.protocol("WM_DELETE_WINDOW", self.cancel)
 
@@ -226,7 +225,7 @@ vanaf je lokale laptop of OneDrive omgeving.\n\nDeze applicatie is ontwikkeld do
         self.parent.destroy()
         # set output directory
         out_dir = os.path.join(os.path.dirname(
-            self.process_dir), os.path.basename(self.process_dir) + '_ontgrendeld')
+            self.process_dir), os.path.basename(self.process_dir) + '_unlocked')
         logging.info(f'Output directory: {out_dir}')
 
         uf.unlock_pdf(files_to_unlock=self.files_to_unlock,
@@ -260,10 +259,10 @@ vanaf je lokale laptop of OneDrive omgeving.\n\nDeze applicatie is ontwikkeld do
             unlocked_pdfs = unlocked_pdfs - self.pdf_files
 
         # print messages
-        klaar = 'Klaar met het ontgrendelen van PDF bestanden.'
-        total_unlocked = 'Aantal ontgrendelde bestanden: ' + str(unlocked_pdfs)
-        output = 'Ontgrendelde PDF bestanden zijn in map: ' + out_dir
-        output2 = 'Let op: Kijk of het ontgrendelen goed is gelukt.'
+        klaar = 'Tool is ready.'
+        total_unlocked = 'Number of unlocked files: ' + str(unlocked_pdfs)
+        output = 'Unlocked pdf files are in folder: ' + out_dir
+        output2 = 'Check if unlocked files can be edited.'
 
         self.parent = tk.Tk()
         w = self.parent.winfo_reqwidth()
@@ -274,7 +273,7 @@ vanaf je lokale laptop of OneDrive omgeving.\n\nDeze applicatie is ontwikkeld do
         y = (hs / 2.3) - (h / 2.3)
         self.parent.geometry('+%d+%d' % (x, y))
         self.parent.iconbitmap('logo.ico')
-        self.parent.title('Ontgrendelde bestanden')
+        self.parent.title('Unlocked files')
         self.parent.resizable(width="false", height="false")
         self.parent.minsize(width=800, height=150)
         self.parent.maxsize(width=800, height=150)
@@ -292,7 +291,7 @@ vanaf je lokale laptop of OneDrive omgeving.\n\nDeze applicatie is ontwikkeld do
         self.label = tk.Label(self.parent, text=output2).place(
             relx=.03, rely=.4, anchor="w")
 
-        self.quit = tk.Button(self.parent, text='Sluiten', command=self.ready).place(
+        self.quit = tk.Button(self.parent, text='Close', command=self.ready).place(
             relx=.95, rely=.8, anchor="c")
         self.parent.protocol("WM_DELETE_WINDOW", self.ready)
 
