@@ -12,12 +12,11 @@ The executable ('PDF_unlock_tool.exe') installs all the needed dependencies to r
 If the tool is run from the .py file ('PDF_unlock_tool.py') there are extra files needed (also available in this repository):
 - file '_functions/unlock_file.py'
 - file '_functions/unzip_files.py'
-- file '_functions/unlock_file.py'
+- file '_functions/check_length.py'
 - 'logo.ico' (file with a logo)
 - package: 
 	- pikepdf (see file 'requirements/requirements_gui.txt')
 	- source code for this library can be found in https://github.com/pikepdf/pikepdf
-	- this library is licensed under the Mozilla Public License 2.0
 
 ## Test files
 Test files are also available in this repository and can be downloaded to test the tool:
