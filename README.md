@@ -15,8 +15,7 @@ If the tool is run from the .py file ('PDF_unlock_tool.py') there are extra file
 - file '_functions/check_length.py'
 - 'logo.ico' (file with a logo)
 - package: 
-	- pikepdf (see file 'requirements/requirements_gui.txt')
-	- source code for this library can be found in https://github.com/pikepdf/pikepdf
+	- [pikepdf](https://github.com/pikepdf/pikepdf) (see file 'requirements/requirements_gui.txt')
 
 ## Test files
 Test files are also available in this repository and can be downloaded to test the tool:
