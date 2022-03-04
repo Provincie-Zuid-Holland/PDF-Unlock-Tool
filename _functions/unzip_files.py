@@ -5,7 +5,7 @@ from pathlib import Path
 import _functions.check_length as cl
 
 """
-    This file is called from the main file ontgrendel_tool_gui. It is used to unzip files and save status in a log file.
+    This file is called from the main file PDF_unloch_tool.py. It is used to unzip files and save status in a log file.
     
     Author: Joana Cardoso
 """
@@ -16,12 +16,16 @@ logging.basicConfig(level=logging.DEBUG,
                     )  # to see log in console remove filename
 
 
-def unzip_files(zip_dir: str, proc_dir: str):
+def unzip_files(zip_dir, proc_dir):
     """
-    This function unzips files and saves the unzipped files in a new directory.
+    Unzips files and saves the unzipped files in a new directory
 
-    zip_dir is the path to the selected zip file
-    proc_dir is the directory of the unzipped folder
+    Parameters
+    ----------
+    zip_dir: str
+        The path to the selected zip file
+    proc_dir: str 
+        The directory of the unzipped folder
     """
 
     logging.info(f'Started unzipping folder: {zip_dir}')

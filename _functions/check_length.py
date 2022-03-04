@@ -2,7 +2,7 @@ import logging
 import os
 
 """
-    This file is called from the main file ontgrendel_tool_gui and from the file _functions.unzip_files
+    This file is called from the main file PDF_unlock_tool.py and from the file _functions.unzip_files.py
     
     Author: Joana Cardoso
 """
@@ -13,16 +13,23 @@ logging.basicConfig(level=logging.DEBUG,
                     )  # to see log in console remove filename
 
 
-def check_length(des_dir: str, file: str):
+def check_length(des_dir, file):
     """
-    This function checks the length of selected files.
+    Checks the length of the selected files
 
-    des_dir is the path to the destination directory
-    file is the path to the file
-    filename is the name of the file
+    Parameters
+    ----------
+    des_dir: str 
+        The path to the destination directory
+    file: str
+        The path to the file
 
-    @return file_name the name to be saved in case it has a too long name
-    @return long_name is True if the name is too long, default is False
+    Returns
+    -------
+    file_name: str
+        The name to be saved in case it has a too long name
+    long_name: bool 
+        Is True if the name is too long, default is False
     """
 
     logging.info(f'Checking length')
@@ -48,6 +55,7 @@ def check_length(des_dir: str, file: str):
         except:
             logging.error(f'Failed to shorten name: {file} into {file_name}')
         if os.path.exists(file_name):
+            logging.info(f'Path exists: {file_name}')
             try:
                 file_name = os.path.join(des_dir, fileName.replace(fileName, fileName[
                     :max_length]) + "_" + str(
@@ -58,5 +66,6 @@ def check_length(des_dir: str, file: str):
                 logging.error(f'Failed to rename: {file} into {file_name}')
     else:
         file_name = os.path.join(des_dir, file)
+        logging.info(f'Long name:{long_name}')
 
     return file_name, long_name

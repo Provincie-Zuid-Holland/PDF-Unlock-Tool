@@ -9,7 +9,7 @@ import tkinter as tk
 from tkinter import ttk
 
 """
-    This file is called from the main file ontgrendel_tool_gui. It is used to unlock pdf files and save status in a log file.
+    This file is called from the main file PDF_unlock_tool.py. It is used to unlock pdf files and save status in a log file.
     
     Author: Joana Cardoso
 """
@@ -20,13 +20,19 @@ logging.basicConfig(level=logging.DEBUG,
                     )  # to see log in console remove filename
 
 
-def unlock_pdf(files_to_unlock: str, process_dir: str, out_dir: str):
+def unlock_pdf(files_to_unlock, process_dir, out_dir):
     """
-    This function unlocks pdf files and saves the unlocked files in a new directory or with a new name (in case of a single selected file).
+    Unlocks pdf files and saves the unlocked files in a new directory or with a new name (in case of a single selected file).
 
-    files_to_unlock is an array with path to the selected files
-    process_dir is the directory of the selected file
-    out_dir is the main output directory
+    Parameters
+    ----------
+    files_to_unlock: str
+        The pdf files found in the origin(process) directory
+    process_dir: str
+        The directory of the selected folder
+    out_dir: str 
+        The output directory where converted files will be placed
+        is an array with path to the selected files
     """
 
     # create progress bar
@@ -85,12 +91,10 @@ def unlock_pdf(files_to_unlock: str, process_dir: str, out_dir: str):
         logging.info(f'file_out: {file_out}')
         root_dir = os.path.dirname(file_out)
         try:
-            Path(root_dir).mkdir(parents=True,
-                                    exist_ok=True)  # Create output dir
+            Path(root_dir).mkdir(parents=True, exist_ok=True)  ## Create output dir
             logging.debug(f'Creating output directory: {root_dir}')
         except:
             logging.error(f'Failed to create output directory: {root_dir}')
-
 
         # Open pdf and save with pikepdf to get rid of any write protections
         # Copy to tempdir since input file cannot be overwritten

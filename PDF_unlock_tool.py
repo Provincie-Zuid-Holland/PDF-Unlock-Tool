@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# coding: utf-8
+# Author: Joana Cardoso
+
 import logging
 import os
 import tkinter as tk
@@ -23,14 +27,27 @@ class Application(tk.Frame):
     - Determining the amount of unlocked files
     - Making a log file where all the steps can be followed and errors can be traced
 
-    Author: Joana Cardoso
+    Methods
+    -------
+    folder_type()
+        Sets up a screen to select the location of the pdf documents for unlocking
+    select_zip()
+        Calls _functions.unzip_file.unzip_files and gets the path to the selected file
+    select_folder()
+        Gets the path to the selected folder and calls _functions.check_length.check_length
+    find_pdf_files()
+        Gets the amount of pdf files found in the selected folder or zip file and presents the results in a screen
+    open_folder(path: str)
+        Opens the links in the last screen of the tool
+    process_pdf()
+        Converts the selected files to pdf
     """
 
     logging.info('Starting Tool')
 
     def __init__(self, parent):
         """
-        This function initializes the tool and sets up a start screen.
+        Initializes the tool and sets up a start screen.
         """
 
         root.withdraw()
@@ -47,7 +64,6 @@ class Application(tk.Frame):
     def folder_type(self):
         """
         This function sets up a screen to select the location of the pdf documents for unlocking.
-        Possibilities are: single file, folder or zip file. 
         """
 
         self.parent = tk.Tk()
@@ -78,16 +94,13 @@ class Application(tk.Frame):
         """
         If the option zip file is selected in the folder_type screen, this function calls _functions.unzip_file.unzip_files and 
             gets the path to the selected file.
-
-        self.zip_dir is the path to the selected zip file
-        self.process_dir is the directory of the new unzipped folder
         """
 
         self.parent.destroy()
         zip_dir = filedialog.askopenfilename(initialdir="/Users", title="Zipped folder selection",
                                              filetypes=(("ZIP files", "*.ZIP"), ("zip files", "*.zip")))
         if not zip_dir:
-            logging.info('Back to select folder type')
+            logging.info('Back to selection folder type')
             self.folder_type()
 
         else:
@@ -104,8 +117,6 @@ class Application(tk.Frame):
         If the option folder is selected in the folder_type screen, this function gets the path to the selected folder.
         It calls the function check_length in file _functions.check_length.
         If necessary calls the function unzip_files in file _functions.unzip_file.
-
-        self.process_dir is the directory of the selected folder
         """
 
         self.parent.destroy()
@@ -154,13 +165,7 @@ class Application(tk.Frame):
 
     def find_pdf_files(self):
         """
-        This function gets the amount of pdf files found in the selected folder or zip file and presents the results in a screen.
-        Options are: Continue or stop.
-
-        self.files_to_unlock is an array with path to the found files
-        self.empty_dir is an array with the path to empty folders. If empty folder exist they wil be kept in the output directory.
-        self.process_dir is the directory of the selected files
-        self.pdf_files is the number of pdf's found in the process_dir
+        Gets the amount of pdf files found in the selected folder or zip file and presents the results in a screen.
         """
 
         logging.info('Find pdf files')
@@ -197,15 +202,20 @@ class Application(tk.Frame):
         self.parent.maxsize(width=275, height=100)
         self.label = tk.Label(self.parent, text=total_pdfs_unlock).place(
             relx=.1, rely=.2, anchor="w")
-        self.doorgaan = tk.Button(self.parent, text='Continue', command=self.process_pdf).place(relx=.68,
-                                                                                                rely=.7, anchor="c")
+        self.contin = tk.Button(self.parent, text='Continue', command=self.process_pdf).place(
+            relx=.68, rely=.7, anchor="c")
         self.quit = tk.Button(self.parent, text='Stop', command=self.cancel).place(
             relx=.86, rely=.7, anchor="c")
         self.parent.protocol("WM_DELETE_WINDOW", self.cancel)
 
-    def open_folder(self, path: str):
+    def open_folder(self, path):
         """
-        Function that opens the link to the unloked files in the last screen.
+        Opens the link to the unloked files in the last screen.
+
+        Parameters
+        ----------
+        path: str
+            The path to the link
         """
 
         os.startfile(path, 'open')
@@ -213,23 +223,16 @@ class Application(tk.Frame):
     def process_pdf(self):
         """
         This function unlocks pdf files, counts the unloked files and presents the results in a final screen.
-        Calls the function unlock_pdf in file _functions.unlock_file
-
-        self.single_file sets the value for the use of a single file or not
-        out_dir sets the path to the output directory (where unlocked files will be placed)
-        self.files_to_unlock is an array with path to the found files
-        self.empty_dir is an array with the path to empty folders. If there exist they wil be kept in the output directory
-        unlocked_pdfs gives the number of unlocked files
-
+        Calls the function unlock_pdf in file _functions.unlock_file.
         """
+
         self.parent.destroy()
         # set output directory
-        out_dir = os.path.join(os.path.dirname(
-            self.process_dir), os.path.basename(self.process_dir) + '_unlocked')
+        out_dir = os.path.join(os.path.dirname(self.process_dir), os.path.basename(self.process_dir) + '_unlocked')
         logging.info(f'Output directory: {out_dir}')
 
-        uf.unlock_pdf(files_to_unlock=self.files_to_unlock,
-                      process_dir=self.process_dir, out_dir=out_dir)
+        uf.unlock_pdf(files_to_unlock=self.files_to_unlock, process_dir=self.process_dir, 
+                      out_dir=out_dir)
         logging.info('Finished unlocking PDF files')
 
         # make empty directories if they exist in the original directory
@@ -255,11 +258,9 @@ class Application(tk.Frame):
                 name_lower = name.lower()
                 if name_lower.endswith('.pdf'):
                     unlocked_pdfs += 1
-        if self.single_file:
-            unlocked_pdfs = unlocked_pdfs - self.pdf_files
 
         # print messages
-        klaar = 'Tool is ready.'
+        ready = 'Tool is ready.'
         total_unlocked = 'Number of unlocked files: ' + str(unlocked_pdfs)
         output = 'Unlocked pdf files are in folder: ' + out_dir
         output2 = 'Check if unlocked files can be edited.'
@@ -277,7 +278,7 @@ class Application(tk.Frame):
         self.parent.resizable(width="false", height="false")
         self.parent.minsize(width=800, height=150)
         self.parent.maxsize(width=800, height=150)
-        self.label = tk.Label(self.parent, text=klaar).place(
+        self.label = tk.Label(self.parent, text=ready).place(
             relx=.03, rely=.1, anchor="w")
         self.label = tk.Label(self.parent, text=total_unlocked).place(
             relx=.03, rely=.25, anchor="w")
@@ -295,15 +296,9 @@ class Application(tk.Frame):
             relx=.95, rely=.8, anchor="c")
         self.parent.protocol("WM_DELETE_WINDOW", self.ready)
 
-    def tool_destroy(self):
-        """
-        Function that destroys the tool if file/folder selection is canceled.
-        """
-        root.destroy()
-
     def cancel(self):
         """
-        Function that cancels the tool and inserts info in the log file if the process is stopped half-way.
+        Cancels the tool and inserts info in the log file if the process is stopped half-way.
         """
 
         self.parent.destroy()
@@ -313,7 +308,7 @@ class Application(tk.Frame):
 
     def ready(self):
         """
-        Function that stops the tool and inserts info in the log file when the process is ended.
+        Destroys the tool and inserts info in the log file when the process is ended.
         """
 
         self.parent.destroy()
