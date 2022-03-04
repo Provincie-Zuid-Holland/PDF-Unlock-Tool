@@ -24,7 +24,7 @@ Test files are also available in this repository and can be downloaded to test t
 
 ## Using the tool
 ### Run the tool using the python script
-- Make a new virtual environment and activate de new environment
+- Create a new virtual environment (Python 3.7) and activate de new environment
 - Install the dependencies: 'pip install -r requirements_gui.txt'
 - Run the file 'PDF_unlock_tool.py' to unlock one or more pdf files (see 'Manual PDF unlock tool.pdf')
 - Check if unlocked files can be edited
